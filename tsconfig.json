@@ -1,0 +1,27 @@
+{
+    "compilerOptions": {
+        "target": "es6",
+        "module": "commonjs",
+        "moduleResolution": "node",
+        "importHelpers": true,
+        "jsx": "react",
+        "esModuleInterop": true,
+        "sourceMap": true,
+        "baseUrl": "./",
+        "strict": true,
+        "paths": {
+            "@/*": ["src/*"],
+            "@@/*": ["src/.umi/*"]
+        },
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,//ts注解support
+        "allowSyntheticDefaultImports": true
+    },
+    "include": [
+        "mock/**/*",
+        "src/**/*",
+        "config/**/*",
+        ".umirc.ts",
+        "typings.d.ts"
+    ]
+}

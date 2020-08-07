@@ -1,0 +1,24 @@
+.content{
+    width: 400px;
+    height:210px;
+    display: flex;
+    align-items: center;
+}
+.center{
+    width:400px;
+    height:300px;
+    position:absolute;
+    left:50%;
+    top:50%;
+    transform:translate(-50%,-50%);
+}
+.absCenter{
+    width:400px;
+    height:300px;
+    position:absolute;
+    left:0;
+    top:0;
+    bottom: 0;
+    right: 0;
+    margin: auto;
+}

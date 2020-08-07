@@ -1,0 +1,32 @@
+@import "~antd/dist/antd.css";
+@import "./constans/statement";
+
+*{
+  padding: 0;
+  margin: 0;
+}
+ul,li{
+  list-style: none;
+}
+
+.gl-color{
+    color: $gl-color;
+}
+.gl-background{
+    background: $gl-background;
+}
+.mg{
+    margin: 20px;
+}
+.pd{
+    padding: 20px;
+}
+
+.flex{
+    display: flex;
+}
+.flex-center{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
