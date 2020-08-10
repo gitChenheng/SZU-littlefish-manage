@@ -1,45 +1,52 @@
-import React from "react";
-import { Menu } from 'antd';
-import { AppstoreOutlined, MailOutlined, SettingOutlined } from '@ant-design/icons';
+import React, {Fragment} from "react";
+import { Menu, Button } from 'antd';
+import {
+    DatabaseOutlined, MessageOutlined
+} from '@ant-design/icons';
+import {history} from "umi"
 
 const { SubMenu } = Menu;
 
 export default class NavBar extends React.Component<any, any>{
-    state = {}
     handleClick (e: any){
-        console.log('click ', e);
+        if (e.key === history.location.pathname){
+            return;
+        }
+        history.push(e.key)
     };
     render() {
         return <Menu
             onClick={this.handleClick}
-            style={{ width: 256 }}
-            defaultSelectedKeys={['1']}
-            defaultOpenKeys={['sub1']}
+            style={{ width: this.props.navBarWidth }}
+            defaultSelectedKeys={[history.location.pathname]}
+            defaultOpenKeys={['sub2']}
             mode="inline"
         >
-            <SubMenu key="sub1" title={<span><MailOutlined /><span>Navigation One</span></span>}>
-                <Menu.ItemGroup key="g1" title="Item 1">
-                    <Menu.Item key="1">Option 1</Menu.Item>
-                    <Menu.Item key="2">Option 2</Menu.Item>
-                </Menu.ItemGroup>
-                <Menu.ItemGroup key="g2" title="Item 2">
-                    <Menu.Item key="3">Option 3</Menu.Item>
-                    <Menu.Item key="4">Option 4</Menu.Item>
-                </Menu.ItemGroup>
+            <SubMenu key="sub1" icon={<MessageOutlined />} title="消息">
             </SubMenu>
-            <SubMenu key="sub2" icon={<AppstoreOutlined />} title="Navigation Two">
-                <Menu.Item key="5">Option 5</Menu.Item>
-                <Menu.Item key="6">Option 6</Menu.Item>
-                <SubMenu key="sub3" title="Submenu">
-                    <Menu.Item key="7">Option 7</Menu.Item>
-                    <Menu.Item key="8">Option 8</Menu.Item>
-                </SubMenu>
-            </SubMenu>
-            <SubMenu key="sub4" title={<span><SettingOutlined /><span>Navigation Three</span></span>}>
-                <Menu.Item key="9">Option 9</Menu.Item>
-                <Menu.Item key="10">Option 10</Menu.Item>
-                <Menu.Item key="11">Option 11</Menu.Item>
-                <Menu.Item key="12">Option 12</Menu.Item>
+            <SubMenu key="sub2" title={<span><DatabaseOutlined /><span>基础数据</span></span>}>
+                <Menu.ItemGroup key="g1" title="家校互动">
+                    <Menu.Item key="/exportStudents">学生信息导入</Menu.Item>
+                    <Menu.Item key="/exportParents">家长信息导入</Menu.Item>
+                    <Menu.Item key="/exportTeachers">教师信息导入</Menu.Item>
+                    <Menu.Item key="/exportTranscripts">学生成绩导入</Menu.Item>
+                </Menu.ItemGroup>
+                <Menu.ItemGroup key="g2" title="科研方向">
+                    <Menu.Item key="5">科研信息导入</Menu.Item>
+                </Menu.ItemGroup>
+                <Menu.ItemGroup key="g3" title="科研赛事、技能考试">
+                    <Menu.Item key="6">科研赛事导入</Menu.Item>
+                    <Menu.Item key="7">技能考试导入</Menu.Item>
+                </Menu.ItemGroup>
+                <Menu.ItemGroup key="g4" title="招募公告">
+                    <Menu.Item key="8">招募信息发布</Menu.Item>
+                </Menu.ItemGroup>
+                <Menu.ItemGroup key="g5" title="学习小树洞">
+                    <Menu.Item key="9">学生疑惑</Menu.Item>
+                </Menu.ItemGroup>
+                <Menu.ItemGroup key="g6" title='"益"起学'>
+                    <Menu.Item key="10">发布科目需求</Menu.Item>
+                </Menu.ItemGroup>
             </SubMenu>
         </Menu>;
     }

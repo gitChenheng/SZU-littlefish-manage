@@ -30,3 +30,13 @@ ul,li{
     justify-content: center;
     align-items: center;
 }
+
+.content{
+    &>ul,&>div{
+        display: inline-block;
+        vertical-align: top;
+    }
+    &>div{
+        padding: 10px 20px;
+    }
+}

@@ -1,13 +1,11 @@
 import React, {Fragment, Component} from "react";
-import style from "./index.scss";
 import RightSpace from "@/components/hoc/RightSpace";
 
 @RightSpace
-export default class Home extends Component<any, any>{
-    state = {}
+export default class ExportTeachers extends Component<any, any>{
     render() {
         return <Fragment>
-            homePage
+            ExportTeachers
         </Fragment>;
     }
 }
