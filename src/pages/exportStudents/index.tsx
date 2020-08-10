@@ -1,28 +1,9 @@
 import React, {Fragment, Component} from "react";
 import { Table, Tag, Space, Button, message, Upload } from 'antd';
-import { UploadOutlined } from '@ant-design/icons';
 import RightSpace from "@/components/hoc/RightSpace";
 import {get, post} from "@/utils/request";
 import XLSX from "xlsx";
-
-const props = {
-    name: 'file',
-    action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
-    headers: {
-        authorization: 'authorization-text',
-    },
-    onChange(info: any) {
-        console.log(info)
-        if (info.file.status !== 'uploading') {
-            console.log(info.file, info.fileList);
-        }
-        if (info.file.status === 'done') {
-            message.success(`${info.file.name} file uploaded successfully`);
-        } else if (info.file.status === 'error') {
-            message.error(`${info.file.name} file upload failed.`);
-        }
-    },
-};
+import UploadFile from "@/components/UploadFile";
 
 @RightSpace
 export default class ExportStudents extends Component<any, any>{
@@ -139,11 +120,51 @@ export default class ExportStudents extends Component<any, any>{
     //     // 以二进制方式打开文件
     //     fileReader.readAsBinaryString(files[0]);
     // }
+    // exportExcel(headers, data, fileName = '请假记录表.xlsx') {
+    //     const _headers = headers
+    //         .map((item, i) => Object.assign({}, { key: item.key, title: item.title, position: String.fromCharCode(65 + i) + 1 }))
+    //         .reduce((prev, next) => Object.assign({}, prev, { [next.position]: { key: next.key, v: next.title } }), {});
+    //
+    //     const _data = data
+    //         .map((item, i) => headers.map((key, j) => Object.assign({}, { content: item[key.key], position: String.fromCharCode(65 + j) + (i + 2) })))
+    //         // 对刚才的结果进行降维处理（二维数组变成一维数组）
+    //         .reduce((prev, next) => prev.concat(next))
+    //         // 转换成 worksheet 需要的结构
+    //         .reduce((prev, next) => Object.assign({}, prev, { [next.position]: { v: next.content } }), {});
+    //
+    //     // 合并 headers 和 data
+    //     const output = Object.assign({}, _headers, _data);
+    //     // 获取所有单元格的位置
+    //     const outputPos = Object.keys(output);
+    //     // 计算出范围 ,["A1",..., "H2"]
+    //     const ref = `${outputPos[0]}:${outputPos[outputPos.length - 1]}`;
+    //
+    //     // 构建 workbook 对象
+    //     const wb = {
+    //         SheetNames: ['mySheet'],
+    //         Sheets: {
+    //             mySheet: Object.assign(
+    //                 {},
+    //                 output,
+    //                 {
+    //                     '!ref': ref,
+    //                     '!cols': [{ wpx: 45 }, { wpx: 100 }, { wpx: 200 }, { wpx: 80 }, { wpx: 150 }, { wpx: 100 }, { wpx: 300 }, { wpx: 300 }],
+    //                 },
+    //             ),
+    //         },
+    //     };
+    //
+    //     // 导出 Excel
+    //     XLSX.writeFile(wb, fileName);
+    // }
     render() {
         return <Fragment>
-            <Upload {...props}>
-                <Button><UploadOutlined/> 导入学生数据</Button>
-            </Upload>
+            <UploadFile
+                local
+                callBack={(data: any) => {
+                    console.log(data)
+                }}
+            />
             <Table
                 rowKey="id"
                 bordered
