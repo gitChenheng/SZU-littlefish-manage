@@ -17,6 +17,7 @@ export default class Login extends React.Component<any, any>{
     render() {
         return <Fragment>
             <div className={style.center}>
+                <h3>登录</h3>
                 <Form
                     {...layout}
                     name="basic"
@@ -40,7 +41,7 @@ export default class Login extends React.Component<any, any>{
                         console.log(e)
                     }}
                 >
-                    <h1>登录</h1>
+                    {/*<h1>登录</h1>*/}
                     <Form.Item
                         label="用户名"
                         name="name"
@@ -63,8 +64,3 @@ export default class Login extends React.Component<any, any>{
         </Fragment>
     }
 }
-
-// export default connect(
-//     (auth) =>
-//         ({...auth})
-// )(Login);
