@@ -25,6 +25,7 @@ export default {
                 })
                 yield put({type: "common/loadingOff"})
             }catch (e) {
+                yield put({type: "common/loadingOff"})
                 throw e
             }
         },
@@ -32,14 +33,15 @@ export default {
             try {
                 yield put({type: "common/loadingOn"})
                 const r = yield call(exportsBaseStudents, _.payload)
-                yield put({type: "common/loadingOff"})
-                yield put({type: "fetchBaseStudents"})
                 if (r.code === "1"){
-                    message.success("导入成功")
+                    message.success("导入成功");
+                    yield put({type: "fetchBaseStudents"})
                 }else{
                     message.warn(r.msg)
                 }
+                yield put({type: "common/loadingOff"})
             }catch (e) {
+                yield put({type: "common/loadingOff"})
                 throw e
             }
         }
