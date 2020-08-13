@@ -3,7 +3,7 @@ import path from "path";
 
 export default defineConfig({
     define: {
-        "process.env.requestPrefix": "https://www.denominator.online:3001/"
+        "process.env.requestPrefix": "http://localhost:3001/"
     },
     alias: {
         "@public": path.join(process.cwd(), "/public")
@@ -14,9 +14,9 @@ export default defineConfig({
     },
     sass: {},
     routes: [
-        { exact: false, path: '/', component: '@/layouts/index',
+        { path: "/login", exact: true, component: "@/pages/login" },
+        { path: '/', exact: false, component: '@/layouts/index', wrappers: ['@/pages/auth'],
             routes: [
-                { path: "/login", exact: true, component: "@/pages/login" },
                 { path: "/", exact: true, redirect: "/home" },
                 { path: "/home", exact: true, component: "@/pages/home" },
                 { path: "/exportStudents", exact: true, component: "@/pages/exportStudents" },
