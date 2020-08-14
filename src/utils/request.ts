@@ -1,6 +1,7 @@
 import Axios from "axios";
-import {getSessionStore, setSessionStore, clearSessionStore} from "@/utils/storage";
+import {getSessionStore} from "@/utils/storage";
 import {history} from "@@/core/history";
+import {message} from "antd";
 
 let instance: any = null;
 
@@ -31,6 +32,9 @@ export const get = (url: string) => {
                     }else{
                         resolve(r.data)
                     }
+                }else{
+                    reject(r.data.msg);
+                    message.warn(r.data.msg);
                 }
             })
             .catch((e: any) =>
@@ -47,13 +51,16 @@ export const post = (url: string, data?: object) => {
                     if (r.data && r.data.code === "4"){
                         history.push("/login");
                     }else{
-                        resolve(r.data)
+                        resolve(r.data);
                     }
+                }else{
+                    reject(r.data.msg);
+                    message.warn(r.data.msg);
                 }
             })
-            .catch((e: any) =>
-                reject(e)
-            );
+            .catch((e: any) => {
+                message.warn("网络错误");
+            });
     })
 }
 
