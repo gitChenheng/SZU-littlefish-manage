@@ -6,8 +6,24 @@ import XLSX from "xlsx";
 import {history} from "@@/core/history";
 
 export default class UploadFile extends React.Component<any, any>{
+    state = {
+        fileList: [],
+    }
     comm = {
         onChange: (info: any) => {
+            let fileList = [...info.fileList];
+            // 1. Limit the number of uploaded files
+            // Only to show two recent uploaded files, and old ones will be replaced by the new
+            fileList = fileList.slice(-1);
+            // 2. Read from response and show file link
+            fileList = fileList.map(file => {
+                if (file.response) {
+                    // Component will show file.url as link
+                    file.url = file.response.url;
+                }
+                return file;
+            });
+            this.setState({ fileList });
             if (this.props.local){
                 if (info.file && info.file.status === "done"){
                     this.importExcel(info.file);
@@ -24,11 +40,19 @@ export default class UploadFile extends React.Component<any, any>{
                     });
                     return;
                 }
+                if (r && r.code === "0"){
+                    message.warn(r.msg);
+                    this.setState({ fileList: [] });
+                    return;
+                }
                 if (info.file.status !== 'uploading') {
                     console.log(info.file, info.fileList);
                 }
                 if (info.file.status === 'done') {
                     message.success(`${info.file.name} 文件上传成功`);
+                    if (this.props.callback){
+                        this.props.callback(r);
+                    }
                 } else if (info.file.status === 'error') {
                     message.error(`${info.file.name} 文件上传失败`);
                 }
@@ -38,7 +62,7 @@ export default class UploadFile extends React.Component<any, any>{
     properties = this.props.local ? this.comm : {
         ...this.comm,
         name: this.props.name || `filename`,
-        action: `${process.env.requestPrefix}api/baseData/uploadFile`,
+        action: `${process.env.requestPrefix}/api/baseData/uploadFile`,
         headers: {
             token: getSessionStore("token")
         },
@@ -71,9 +95,15 @@ export default class UploadFile extends React.Component<any, any>{
         // 以二进制方式打开文件
         fileReader.readAsBinaryString(file.originFileObj);
     }
+    resetFileList(){
+        this.setState({fileList: []})
+    }
     render() {
         return (
-            <Upload {...this.properties as any}>
+            <Upload
+                {...this.properties as any}
+                fileList={this.state.fileList}
+            >
                 <Button>
                     {this.props.icon || (this.props.local && <DownloadOutlined/>) || <UploadOutlined/>}
                     {this.props.text || (this.props.local && `导入`) || `上传`}

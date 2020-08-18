@@ -1,13 +1,10 @@
 import React, {Fragment, Component} from "react";
 import { Table, Divider } from 'antd';
-import RightSpace from "@/components/hoc/RightSpace";
 import UploadFile from "@/components/UploadFile";
 import {connect} from "umi";
 
-@RightSpace
 class ExportStudents extends Component<any, any>{
     state = {
-        data: [],
         columns: [
             {
                 title: '学号',

@@ -1,9 +1,7 @@
 import {
-    exportsBaseParents,
-    exportsBaseStudents, exportsBaseTeachers,
-    fetchBaseParents,
-    fetchBaseStudents,
-    fetchBaseTeachers
+    exportsBaseParents, exportsBaseStudents, exportsBaseTeachers,
+    fetchBaseParents, fetchBaseStudents, fetchBaseTeachers,
+    fetchTranscripts, fetchParentStudent, exportsTranscripts
 } from "@/services/baseData";
 import {message} from "antd";
 
@@ -13,6 +11,8 @@ export default {
         baseStudents: [],
         baseParents: [],
         baseTeachers: [],
+        parentStudent: [],
+        transcripts: [],
     },
     reducers: {
         getBaseStudents(state: any, payload: any){
@@ -33,53 +33,77 @@ export default {
                 baseTeachers: payload.payload,
             }
         },
+        getParentStudent(state: any, payload: any){
+            return {
+                ...state,
+                parentStudent: payload.payload,
+            }
+        },
+        getTranscripts(state: any, payload: any){
+            return {
+                ...state,
+                transcripts: payload.payload,
+            }
+        },
     },
     effects: {
         *fetchBaseStudents(_: any, {call, put}: any){
             try {
-                yield put({type: "common/loadingOn"})
                 const data = yield call(fetchBaseStudents)
                 yield put({
                     type: "getBaseStudents",
                     payload: data.data,
                 })
-                yield put({type: "common/loadingOff"})
             }catch (e) {
-                yield put({type: "common/loadingOff"})
                 throw e
             }
         },
         *fetchBaseParents(_: any, {call, put}: any){
             try {
-                yield put({type: "common/loadingOn"})
                 const data = yield call(fetchBaseParents)
                 yield put({
                     type: "getBaseParents",
                     payload: data.data,
                 })
-                yield put({type: "common/loadingOff"})
             }catch (e) {
-                yield put({type: "common/loadingOff"})
                 throw e
             }
         },
         *fetchBaseTeachers(_: any, {call, put}: any){
             try {
-                yield put({type: "common/loadingOn"})
                 const data = yield call(fetchBaseTeachers)
                 yield put({
                     type: "getBaseTeachers",
                     payload: data.data,
                 })
-                yield put({type: "common/loadingOff"})
             }catch (e) {
-                yield put({type: "common/loadingOff"})
+                throw e
+            }
+        },
+        *fetchParentStudent(_: any, {call, put}: any){
+            try {
+                const data = yield call(fetchParentStudent)
+                yield put({
+                    type: "getParentStudent",
+                    payload: data.data,
+                })
+            }catch (e) {
+                throw e
+            }
+        },
+        *fetchTranscripts(_: any, {call, put}: any){
+            try {
+                const data = yield call(fetchTranscripts)
+                yield put({
+                    type: "getTranscripts",
+                    payload: data.data,
+                })
+            }catch (e) {
                 throw e
             }
         },
         *exportsBaseStudents(_: any, {call, put}: any){
             try {
-                yield put({type: "common/loadingOn"})
                 const r = yield call(exportsBaseStudents, _.payload)
                 if (r.code === "1"){
                     message.success("导入成功");
@@ -87,15 +111,12 @@ export default {
                 }else{
                     message.warn(r.msg)
                 }
-                yield put({type: "common/loadingOff"})
             }catch (e) {
-                yield put({type: "common/loadingOff"})
                 throw e
             }
         },
         *exportsBaseParents(_: any, {call, put}: any){
             try {
-                yield put({type: "common/loadingOn"})
                 const r = yield call(exportsBaseParents, _.payload)
                 if (r.code === "1"){
                     message.success("导入成功");
@@ -103,15 +124,12 @@ export default {
                 }else{
                     message.warn(r.msg)
                 }
-                yield put({type: "common/loadingOff"})
             }catch (e) {
-                yield put({type: "common/loadingOff"})
                 throw e
             }
         },
         *exportsBaseTeachers(_: any, {call, put}: any){
             try {
-                yield put({type: "common/loadingOn"})
                 const r = yield call(exportsBaseTeachers, _.payload)
                 if (r.code === "1"){
                     message.success("导入成功");
@@ -119,9 +137,20 @@ export default {
                 }else{
                     message.warn(r.msg)
                 }
-                yield put({type: "common/loadingOff"})
             }catch (e) {
-                yield put({type: "common/loadingOff"})
+                throw e
+            }
+        },
+        *exportsTranscripts(_: any, {call, put}: any){
+            try {
+                const r = yield call(exportsTranscripts, _.payload)
+                if (r.code === "1"){
+                    message.success("导入成功");
+                    yield put({type: "fetchTranscripts"})
+                }else{
+                    message.warn(r.msg)
+                }
+            }catch (e) {
                 throw e
             }
         },
@@ -129,19 +158,29 @@ export default {
     subscriptions: {
         setup({ dispatch, history }: any) {
             return history.listen(({ pathname }: any) => {
-                if (pathname === "/exportStudents") {
+                if (pathname === "/main/exportStudents") {
                     dispatch({
                         type: "fetchBaseStudents",
                     })
                 }
-                if (pathname === "/exportParents") {
+                if (pathname === "/main/exportParents") {
                     dispatch({
                         type: "fetchBaseParents",
                     })
                 }
-                if (pathname === "/exportTeachers") {
+                if (pathname === "/main/exportTeachers") {
                     dispatch({
                         type: "fetchBaseTeachers",
+                    })
+                }
+                if (pathname === "/main/exportParentStudent") {
+                    dispatch({
+                        type: "fetchParentStudent",
+                    })
+                }
+                if (pathname === "/main/exportTranscripts") {
+                    dispatch({
+                        type: "fetchTranscripts",
                     })
                 }
             });
