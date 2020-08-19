@@ -27,7 +27,6 @@ export default class NavBar extends React.Component<any, any>{
                     <Menu.Item key="/main/exportStudents">学生信息导入</Menu.Item>
                     <Menu.Item key="/main/exportParents">家长信息导入</Menu.Item>
                     <Menu.Item key="/main/exportTeachers">教师信息导入</Menu.Item>
-                    <Menu.Item key="/main/exportParentStudent">家长-学生关系导入</Menu.Item>
                     <Menu.Item key="/main/exportTranscripts">学生成绩导入</Menu.Item>
                 </Menu.ItemGroup>
             </SubMenu>

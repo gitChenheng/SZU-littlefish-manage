@@ -15,17 +15,16 @@ export default defineConfig({
     sass: {},
     routes: [
         { path: "/login", exact: true, component: "@/pages/login" },
-        { path: '/', exact: false, component: '@/layouts/index', wrappers: ['@/pages/auth'],
+        { path: '/', exact: false, component: '@/layouts/index',
             routes: [
                 { path: "/", exact: true, redirect: "/main"},
-                { path: "/main", exact: false, component: "@/pages/main",
+                { path: "/main", exact: false, component: "@/pages/main", wrappers: ['@/pages/auth'],
                     routes: [
                         { path: "/main", exact: true, redirect: "/main/home" },
                         { path: "/main/home", exact: true, component: "@/pages/home" },
                         { path: "/main/exportStudents", exact: true, component: "@/pages/exportStudents" },
                         { path: "/main/exportTeachers", exact: true, component: "@/pages/exportTeachers" },
                         { path: "/main/exportParents", exact: true, component: "@/pages/exportParents" },
-                        { path: "/main/exportParentStudent", exact: true, component: "@/pages/exportParentStudent" },
                         { path: "/main/exportTranscripts", exact: true, component: "@/pages/exportTranscripts" },
                         { path: "/main/annScientific", exact: true, component: "@/pages/annScientific" },
                         { path: "/main/annCompetition", exact: true, component: "@/pages/annCompetition" },
