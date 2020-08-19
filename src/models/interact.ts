@@ -1,4 +1,5 @@
-import {fetchTogether, fetchTreeHoles} from "@/services/interact";
+import {completeTogether, fetchTogether, fetchTreeHoleComments, fetchTreeHoles, pushComment} from "@/services/interact";
+import {message} from "antd";
 
 export default {
     namespace: "interact",
@@ -7,18 +8,30 @@ export default {
         together: [],
     },
     reducers: {
-        getTreeHoles(state: any, payload: any){
+        getTreeHoles(state: any, {payload}: any){
             return {
                 ...state,
-                treeHoles: payload.payload,
+                treeHoles: payload,
             }
         },
-        getTogether(state: any, payload: any){
+        getTogether(state: any, {payload}: any){
             return {
                 ...state,
-                together: payload.payload,
+                together: payload,
             }
         },
+        updateTogether(state: any, {payload}: any){
+            const replaceOne = state.together.map((item: any) => {
+                if (payload.id === item.id){
+                    return payload;
+                }
+                return item;
+            })
+            return {
+                ...state,
+                together: replaceOne
+            }
+        }
     },
     effects: {
         *fetchTreeHoles(_: any, {call, put}: any){
@@ -32,6 +45,13 @@ export default {
                 throw e
             }
         },
+        *fetchTreeHoleComments(_: any, {call, put}: any){
+            try {
+                const r = yield call(fetchTreeHoleComments, _.payload)
+            }catch (e) {
+                throw e
+            }
+        },
         *fetchTogether(_: any, {call, put}: any){
             try {
                 const data = yield call(fetchTogether)
@@ -39,6 +59,32 @@ export default {
                     type: "getTogether",
                     payload: data.data,
                 })
+            }catch (e) {
+                throw e
+            }
+        },
+        *pushComment(_: any, {call, put}: any){
+            try {
+                const r = yield call(pushComment, _.payload)
+                if (r.code === "1"){
+                    message.success("提交成功");
+                    yield put({type: "fetchTreeHoles"})
+                }else{
+                    message.warn(r.msg);
+                }
+            }catch (e) {
+                throw e
+            }
+        },
+        *completeTogether(_: any, {call, put}: any){
+            try {
+                const r = yield call(completeTogether, _.payload)
+                if (r.code === "1"){
+                    message.success("提交成功");
+                    yield put({type: "fetchTogether"})
+                }else{
+                    message.warn(r.msg);
+                }
             }catch (e) {
                 throw e
             }

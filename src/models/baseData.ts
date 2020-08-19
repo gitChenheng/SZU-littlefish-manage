@@ -15,34 +15,34 @@ export default {
         transcripts: [],
     },
     reducers: {
-        getBaseStudents(state: any, payload: any){
+        getBaseStudents(state: any, {payload}: any){
             return {
                 ...state,
-                baseStudents: payload.payload,
+                baseStudents: payload,
             }
         },
-        getBaseParents(state: any, payload: any){
+        getBaseParents(state: any, {payload}: any){
             return {
                 ...state,
-                baseParents: payload.payload,
+                baseParents: payload,
             }
         },
-        getBaseTeachers(state: any, payload: any){
+        getBaseTeachers(state: any, {payload}: any){
             return {
                 ...state,
-                baseTeachers: payload.payload,
+                baseTeachers: payload,
             }
         },
-        getParentStudent(state: any, payload: any){
+        getParentStudent(state: any, {payload}: any){
             return {
                 ...state,
-                parentStudent: payload.payload,
+                parentStudent: payload,
             }
         },
-        getTranscripts(state: any, payload: any){
+        getTranscripts(state: any, {payload}: any){
             return {
                 ...state,
-                transcripts: payload.payload,
+                transcripts: payload,
             }
         },
     },

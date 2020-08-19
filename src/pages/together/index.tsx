@@ -1,6 +1,7 @@
 import React, {Fragment, Component} from "react";
 import {connect} from "umi";
-import {Table, DatePicker, Input} from "antd";
+import {Table, DatePicker, Input, Button} from "antd";
+import moment from 'moment';
 
 class Together extends Component<any, any>{
     state = {
@@ -21,8 +22,15 @@ class Together extends Component<any, any>{
                 key: 'time',
                 render: (text: any, record: any, index: number) =>
                     <DatePicker
+                        defaultValue={text ? moment(new Date(text), 'YYYY/MM/DD') : undefined}
                         onChange={(date, dateString) => {
-                            console.log(date, dateString);
+                            this.props.dispatch({
+                                type: "interact/updateTogether",
+                                payload: {
+                                    ...record,
+                                    time: new Date(dateString).getTime(),
+                                }
+                            })
                         }}
                     />,
             },
@@ -31,13 +39,36 @@ class Together extends Component<any, any>{
                 dataIndex: 'address',
                 key: 'address',
                 render: (text: any, record: any, index: number) => <div>
-                    <Input/>
+                    <Input
+                        defaultValue={text}
+                        onChange={e => {
+                            this.props.dispatch({
+                                type: "interact/updateTogether",
+                                payload: {
+                                    ...record, address: e.target.value
+                                }
+                            })
+                        }}
+                    />
                 </div>,
             },
+            {
+                title: '操作',
+                dataIndex: 'action',
+                key: 'action',
+                render: ((text: any, record: any) =>
+                        <Button type="primary" onClick={() =>
+                            this.props.dispatch({
+                                type: "interact/completeTogether",
+                                payload: record
+                            })
+                        }>保存</Button>
+                )
+            }
         ],
     }
     render() {
-        const {dispatch, interact} = this.props;
+        const {interact} = this.props;
         return <Fragment>
             <Table
                 rowKey="id"

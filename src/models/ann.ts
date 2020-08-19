@@ -16,22 +16,22 @@ export default {
         recruits: [],
     },
     reducers: {
-        getScientific(state: any, payload: any){
+        getScientific(state: any, {payload}: any){
             return {
                 ...state,
-                scientific: payload.payload,
+                scientific: payload,
             }
         },
-        getCompetitions(state: any, payload: any){
+        getCompetitions(state: any, {payload}: any){
             return {
                 ...state,
-                competitions: payload.payload,
+                competitions: payload,
             }
         },
-        getRecruits(state: any, payload: any){
+        getRecruits(state: any, {payload}: any){
             return {
                 ...state,
-                recruits: payload.payload,
+                recruits: payload,
             }
         },
     },

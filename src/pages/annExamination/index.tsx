@@ -96,6 +96,7 @@ class AnnExamination extends Component<any, any>{
                 bordered
                 columns={this.state.columns}
                 dataSource={ann.competitions.type2}
+                scroll={{x: 3000}}
             />
         </Fragment>;
     }
