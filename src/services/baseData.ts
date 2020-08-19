@@ -3,10 +3,10 @@ import {get, post} from "@/utils/request";
 export const fetchBaseStudents = async () => {
     return await get("/api/baseData/getBaseUsers?role=1")
 }
-export const fetchBaseParents = async () => {
+export const fetchBaseTeachers = async () => {
     return await get("/api/baseData/getBaseUsers?role=2")
 }
-export const fetchBaseTeachers = async () => {
+export const fetchBaseParents = async () => {
     return await get("/api/baseData/getBaseUsers?role=3")
 }
 export const fetchParentStudent = async () => {
