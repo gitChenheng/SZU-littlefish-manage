@@ -1,7 +1,7 @@
 import {
     exportsBaseParents, exportsBaseStudents, exportsBaseTeachers,
     fetchBaseParents, fetchBaseStudents, fetchBaseTeachers,
-    fetchTranscripts, fetchParentStudent, exportsTranscripts
+    fetchTranscripts, fetchParentStudent, exportsTranscripts, exportBaseParentStudent
 } from "@/services/baseData";
 import {message} from "antd";
 
@@ -80,17 +80,6 @@ export default {
                 throw e
             }
         },
-        *fetchParentStudent(_: any, {call, put}: any){
-            try {
-                const data = yield call(fetchParentStudent)
-                yield put({
-                    type: "getParentStudent",
-                    payload: data.data,
-                })
-            }catch (e) {
-                throw e
-            }
-        },
         *fetchTranscripts(_: any, {call, put}: any){
             try {
                 const data = yield call(fetchTranscripts)
@@ -121,6 +110,18 @@ export default {
                 if (r.code === "1"){
                     message.success("导入成功");
                     yield put({type: "fetchBaseParents"})
+                }else{
+                    message.warn(r.msg)
+                }
+            }catch (e) {
+                throw e
+            }
+        },
+        *exportsBaseParentStudent(_: any, {call, put}: any){
+            try {
+                const r = yield call(exportBaseParentStudent, _.payload)
+                if (r.code === "1"){
+                    message.success("导入成功");
                 }else{
                     message.warn(r.msg)
                 }
@@ -171,11 +172,6 @@ export default {
                 if (pathname === "/main/exportTeachers") {
                     dispatch({
                         type: "fetchBaseTeachers",
-                    })
-                }
-                if (pathname === "/main/exportParentStudent") {
-                    dispatch({
-                        type: "fetchParentStudent",
                     })
                 }
                 if (pathname === "/main/exportTranscripts") {

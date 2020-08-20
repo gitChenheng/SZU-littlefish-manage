@@ -13,7 +13,7 @@ class ExportStudents extends Component<any, any>{
                 // render: (text: any) => <a>{text}</a>,
             },
             {
-                title: '姓名',
+                title: '学生姓名',
                 dataIndex: 'name',
                 key: 'name',
             },
@@ -42,46 +42,6 @@ class ExportStudents extends Component<any, any>{
                 dataIndex: 'clbum',
                 key: 'clbum',
             },
-            // {
-            //     title: 'GPA',
-            //     dataIndex: 'gpa',
-            //     key: 'gpa',
-            // },
-            // {
-            //     title: '获得学分',
-            //     dataIndex: 'obtainCredit',
-            //     key: 'obtainCredit',
-            // },
-            // {
-            //     title: '选课学分',
-            //     dataIndex: 'electiveCredit',
-            //     key: 'electiveCredit',
-            // },
-            // {
-            //     title: '排名',
-            //     dataIndex: 'rank',
-            //     key: 'rank',
-            // },
-            // {
-            //     title: '相对排名',
-            //     dataIndex: 'relateRank',
-            //     key: 'relateRank',
-            // },
-            // {
-            //     title: '专业排名',
-            //     dataIndex: 'proRank',
-            //     key: 'proRank',
-            // },
-            // {
-            //     title: '年级排名',
-            //     dataIndex: 'gradeRank',
-            //     key: 'gradeRank',
-            // },
-            // {
-            //     title: '年级人数',
-            //     dataIndex: 'gradeStudent',
-            //     key: 'gradeStudent',
-            // },
         ],
     }
     render() {
@@ -93,7 +53,7 @@ class ExportStudents extends Component<any, any>{
                 callback={(data: any) => {
                     const params = data.map((item: any) => ({
                         role: 1,
-                        name: item.姓名,
+                        name: item.学生姓名,
                         phone: item.手机号码,
                         studyNum: item.学号,
                         grade: item.年级,

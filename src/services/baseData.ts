@@ -20,10 +20,13 @@ export const exportsBaseStudents = async (params: any[]) => {
     return await post("/api/baseData/exportBaseStudents", params)
 }
 export const exportsBaseParents = async (params: any[]) => {
-    return await post("/api/baseData/exportBaseTeachers", params)
+    return await post("/api/baseData/exportBaseParents", params)
+}
+export const exportBaseParentStudent = async (params: any[]) => {
+    return await post("/api/baseData/exportBaseParentStudent", params)
 }
 export const exportsBaseTeachers = async (params: any[]) => {
-    return await post("/api/baseData/exportBaseParents", params)
+    return await post("/api/baseData/exportBaseTeachers", params)
 }
 export const exportsTranscripts = async (params: any[]) => {
     return await post("/api/baseData/exportTranscripts", params)
