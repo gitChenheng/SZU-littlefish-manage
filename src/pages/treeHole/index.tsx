@@ -13,7 +13,10 @@ class TreeHole extends Component<any, any>{
                 {interact.treeHoles.map((it: any, i: number) => (
                     <Collapse.Panel header={it.issue} key={i}>
                         {it.comments.map((item: any, index: any) => (
-                            <p key={index}>{item.name} : {item.content}-{item.created_at}</p>
+                            <div key={index}>
+                                <div>{item.name} : {item.content}</div>
+                                <div style={{textAlign: "right"}}>--{item.created_at}</div>
+                            </div>
                         ))}
                         <div>
                             <Input
