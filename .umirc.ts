@@ -4,6 +4,7 @@ import path from "path";
 export default defineConfig({
     define: {
         "process.env.requestPrefix": "https://www.denominator.online:3001"
+        // "process.env.requestPrefix": "http://localhost:3001"
     },
     alias: {
         "@public": path.join(process.cwd(), "/public")
