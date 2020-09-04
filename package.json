@@ -2,6 +2,7 @@
     "private": true,
     "scripts": {
         "start": "umi dev",
+        "dev": "umi dev",
         "build": "cross-env UMI_ENV=dev umi build",
         "build:prod": "cross-env UMI_ENV=prod umi build",
         "postinstall": "umi generate tmp",
@@ -30,6 +31,7 @@
         "axios": "^0.19.2",
         "cross-env": "^7.0.2",
         "lint-staged": "^10.0.7",
+        "lodash": "^4.17.20",
         "prettier": "^1.19.1",
         "react": "^16.12.0",
         "react-dom": "^16.12.0",

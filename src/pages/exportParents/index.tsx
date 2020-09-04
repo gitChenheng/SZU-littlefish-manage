@@ -2,6 +2,7 @@ import React, { Fragment, Component } from 'react';
 import { Table, Divider } from 'antd';
 import UploadFile from '@/components/UploadFile';
 import { connect } from 'umi';
+import {unionBy, differenceBy} from "lodash";
 
 class ExportParents extends Component<any,any>{
     state = {
@@ -41,9 +42,10 @@ class ExportParents extends Component<any,any>{
                             name: item.家长姓名,
                             phone : item.家长手机号,
                         }));
+                        const newParams1 = unionBy(params1, 'phone');
                         dispatch({
                             type: 'baseData/exportsBaseParents',
-                            payload: params1,
+                            payload: newParams1,
                         });
                         const params2 = data.map((item : any) => ({
                             phone: item.家长手机号,

@@ -54,7 +54,7 @@ class ExportStudents extends Component<any, any>{
                     const params = data.map((item: any) => ({
                         role: 1,
                         name: item.学生姓名,
-                        phone: item.手机号码,
+                        phone: item.手机号,
                         studyNum: item.学号,
                         grade: item.年级,
                         faculty: item.院系,
