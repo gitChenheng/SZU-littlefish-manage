@@ -2,6 +2,11 @@ import React, {Fragment, Component} from "react";
 import {connect} from "umi";
 import {Table, DatePicker, Input, Button} from "antd";
 import moment from 'moment';
+// import SockJS from "socket.io-client";
+// import {getSessionStore} from "@/utils/storage";
+
+// const roomName = "chat";
+// const socket = new SockJS(`${process.env.wsPrefix}/${roomName}?token=${getSessionStore("token")}`);
 
 class Together extends Component<any, any>{
     state = {
@@ -71,7 +76,14 @@ class Together extends Component<any, any>{
             }
         ],
     }
-    render() {
+    componentDidMount() {
+      // socket.emit('message', {type: "content", content: 111})
+      // socket.on("enter", (msg: any) => {
+      //   console.log(msg)
+      // })
+    }
+
+  render() {
         const {interact} = this.props;
         return <Fragment>
             <Table
