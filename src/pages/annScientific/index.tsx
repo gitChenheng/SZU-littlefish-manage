@@ -6,8 +6,11 @@ import {post} from "@/utils/request";
 
 interface IRecord {
     scientificName: string,
+    intro: string,
     direction: string,
     nucleusStuff: string,
+    pic: string,
+    pdfUrl: string,
 }
 
 class AnnScientific extends Component<any, any>{
@@ -18,14 +21,22 @@ class AnnScientific extends Component<any, any>{
         currRecord: {
             id: undefined,
             scientificName: "",
+            intro: "",
             direction: "",
             nucleusStuff: "",
+            pic: "",
+            pdfUrl: "",
         },
         columns: [
             {
                 title: '名称',
                 dataIndex: 'scientificName',
                 key: 'scientificName',
+            },
+            {
+                title: '简介\\核心成果',
+                dataIndex: 'intro',
+                key: 'intro',
             },
             {
                 title: '科研方向',
@@ -38,18 +49,28 @@ class AnnScientific extends Component<any, any>{
                 key: 'nucleusStuff',
             },
             {
+                title: 'pic地址',
+                dataIndex: 'pic',
+                key: 'pic',
+                render: (text: any) => text ? <a
+                    href={`${process.env.requestPrefix}${text}`}
+                    target="_blank"
+                >查看详情</a> : "",
+            },
+            {
                 title: 'pdf文件地址',
                 dataIndex: 'pdfUrl',
                 key: 'pdfUrl',
-                render: (text: any) => <a
+                render: (text: any) => text ? <a
                     href={`${process.env.requestPrefix}${text}`}
                     target="_blank"
-                >查看详情</a>,
+                >查看详情</a> : "",
             },
             {
                 title: '操作',
                 dataIndex: 'actions',
                 key: 'actions',
+                width: 180,
                 render: (text: any, record: any, index: number) => (
                     <div>
                         <Button onClick={() => this.showModal(record)}>编辑</Button>
@@ -70,6 +91,7 @@ class AnnScientific extends Component<any, any>{
                 ),
             },
         ],
+        pic: "",
         pdfUrl: "",
     }
     confirm = async (e: any, id: number) => {
@@ -102,26 +124,27 @@ class AnnScientific extends Component<any, any>{
                 style={{marginTop: 20}}
                 name="AnnScientific"
                 ref={el => this.form = el}
-                labelCol={{span: 6}}
-                wrapperCol={{span: 14}}
+                labelCol={{span: 8}}
+                wrapperCol={{span: 12}}
                 onFinish={(values: any) => {
-                    const {pdfUrl} = this.state;
-                    if (!pdfUrl){
-                        message.warn('文件地址不能为空');
-                        return;
-                    }
-                    const params = {
+                    const {pdfUrl, pic} = this.state;
+                    let params = {
                         ...values,
-                        pdfUrl
+                    }
+                    if (pic){
+                        params = {...params, pic}
+                    }
+                    if (pdfUrl){
+                        params = {...params, pdfUrl}
                     }
                     dispatch({
                         type: "ann/exportsScientific",
                         payload: params
                     })
                     setTimeout(() => {
-                        this.form.setFieldsValue({ scientificName: "", direction: "", nucleusStuff: ""});
+                        this.form.setFieldsValue({ scientificName: "", intro: "", direction: "", nucleusStuff: ""});
                         this.el.resetFileList();
-                        this.setState({pdfUrl: ""})
+                        this.setState({pic: "", pdfUrl: ""})
                     }, 0)
                 }}
                 onFinishFailed={(e) => {
@@ -135,16 +158,35 @@ class AnnScientific extends Component<any, any>{
                 ><Input />
                 </Form.Item>
                 <Form.Item
+                    label="简介\核心成果"
+                    name="intro"
+                    rules={[{ required: true, message: 'Please input your intro!' }]}
+                ><Input.TextArea />
+                </Form.Item>
+                <Form.Item
                     label="科研方向"
                     name="direction"
                     rules={[{ required: true, message: 'Please input your direction!' }]}
-                ><Input />
+                ><Input.TextArea />
                 </Form.Item>
                 <Form.Item
                     label="核心成员"
                     name="nucleusStuff"
                     rules={[{ required: true, message: 'Please input your nucleusStuff!' }]}
-                ><Input />
+                ><Input.TextArea />
+                </Form.Item>
+                <Form.Item
+                    label="pic"
+                >
+                    <UploadFile
+                        ref={el => this.el = el}
+                        callback={(r: any) => {
+                            if (r.code === "1"){
+                                const pic = r.data;
+                                this.setState({pic})
+                            }
+                        }}
+                    />
                 </Form.Item>
                 <Form.Item
                     label="PDF"
@@ -179,13 +221,35 @@ class AnnScientific extends Component<any, any>{
                 cancelText={'取消'}
             >
                 <p>名称：<Input className="w200" value={currRecord.scientificName} onChange={e => this.onchangeEvent(e, 'scientificName')}/></p>
-                <p>科研方向：<Input className="w200" value={currRecord.direction} onChange={e => this.onchangeEvent(e, 'direction')}/></p>
-                <p>核心成员：<Input className="w200" value={currRecord.nucleusStuff} onChange={e => this.onchangeEvent(e, 'nucleusStuff')}/></p>
+                <p>简介\核心成果：<Input.TextArea className="w200" value={currRecord.intro} onChange={e => this.onchangeEvent(e, 'intro')}/></p>
+                <p>科研方向：<Input.TextArea className="w200" value={currRecord.direction} onChange={e => this.onchangeEvent(e, 'direction')}/></p>
+                <p>核心成员：<Input.TextArea className="w200" value={currRecord.nucleusStuff} onChange={e => this.onchangeEvent(e, 'nucleusStuff')}/></p>
+                <>合照地址：{currRecord.pic} <UploadFile
+                    ref={el => this.el = el}
+                    callback={(r: any) => {
+                        if (r.code === "1"){
+                            const newObj = Object.assign({}, this.state.currRecord);
+                            newObj.pic = r.data;
+                            this.setState({currRecord: newObj})
+                        }
+                    }}
+                /></>
+                <>PDF地址：{currRecord.pdfUrl} <UploadFile
+                    ref={el => this.el = el}
+                    callback={(r: any) => {
+                        if (r.code === "1"){
+                            const newObj = Object.assign({}, this.state.currRecord);
+                            newObj.pdfUrl = r.data;
+                            this.setState({currRecord: newObj})
+                        }
+                    }}
+                /></>
             </Modal>
         </Fragment>;
     }
     handleOk = async (e: any) => {
         const {currRecord} = this.state;
+        console.log(currRecord)
         const r: any = await post("/api/ann/changeScientificDirectById", currRecord);
         if (r.code === "1"){
             message.success("修改成功", 1 , () => {
