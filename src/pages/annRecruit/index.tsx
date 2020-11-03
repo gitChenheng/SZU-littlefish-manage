@@ -5,11 +5,12 @@ import {post} from "@/utils/request";
 
 interface IRecord {
     teamName: string,
-    issueName: string,
     direction: string,
+    requirements: string,
     needStudent: string,
     contactInfo: string,
     contact: string,
+    // status: number,
 }
 
 class AnnRecruit extends Component<any, any>{
@@ -19,11 +20,12 @@ class AnnRecruit extends Component<any, any>{
         currRecord: {
             id: undefined,
             teamName: "",
-            issueName: "",
             direction: "",
+            requirements: "",
             needStudent: "",
             contactInfo: "",
             contact: "",
+            status: null,
         },
         columns: [
             {
@@ -33,14 +35,14 @@ class AnnRecruit extends Component<any, any>{
                 width: 100
             },
             {
-                title: '课题',
-                dataIndex: 'issueName',
-                key: 'issueName',
-            },
-            {
                 title: '研究方向',
                 dataIndex: 'direction',
                 key: 'direction',
+            },
+            {
+                title: '招募要求',
+                dataIndex: 'requirements',
+                key: 'requirements',
             },
             {
                 title: '需要学生数',
@@ -58,11 +60,23 @@ class AnnRecruit extends Component<any, any>{
                 key: 'contact',
             },
             {
+                title: '状态',
+                dataIndex: 'status',
+                key: 'status',
+                render: (text: any) => (
+                    <div>{text === 1 ? "正在招募" : "停止招募"}</div>
+                )
+            },
+            {
                 title: '操作',
                 dataIndex: 'actions',
                 key: 'actions',
                 render: (text: any, record: any, index: number) => (
                     <div>
+                        {record.status === 1 ?
+                            <Button danger onClick={() => this.changeStatus(record.id, 2)}>停止招募</Button> :
+                            <Button type="primary" onClick={() => this.changeStatus(record.id, 1)}>开始招募</Button>
+                        }
                         <Button onClick={() => this.showModal(record)}>编辑</Button>
                         <Popconfirm
                             title="确定删除？"
@@ -117,11 +131,11 @@ class AnnRecruit extends Component<any, any>{
                 onFinish={(values: any) => {
                     dispatch({
                         type: "ann/exportsRecruit",
-                        payload: values
+                        payload: {...values, status: 1}
                     });
                     setTimeout(() => {
                         this.form.setFieldsValue({
-                            teamName: "", issueName: "", direction: "",
+                            teamName: "", direction: "", requirements: "",
                             needStudent: "", contactInfo: "", contact: "",
                         });
                     }, 0)
@@ -137,15 +151,15 @@ class AnnRecruit extends Component<any, any>{
                 ><Input />
                 </Form.Item>
                 <Form.Item
-                    label="课题"
-                    name="issueName"
-                    rules={[{ required: true, message: 'Please input your issueName!' }]}
-                ><Input.TextArea />
-                </Form.Item>
-                <Form.Item
                     label="研究方向"
                     name="direction"
                     rules={[{ required: true, message: 'Please input your direction!' }]}
+                ><Input.TextArea />
+                </Form.Item>
+                <Form.Item
+                    label="招募要求"
+                    name="requirements"
+                    rules={[{ required: true, message: 'Please input your requirements!' }]}
                 ><Input.TextArea />
                 </Form.Item>
                 <Form.Item
@@ -178,7 +192,7 @@ class AnnRecruit extends Component<any, any>{
                 dataSource={ann.recruits}
             />
             <Modal
-                title="学生信息"
+                title="招募"
                 visible={this.state.visible}
                 onOk={this.handleOk}
                 onCancel={this.handleCancel}
@@ -186,14 +200,24 @@ class AnnRecruit extends Component<any, any>{
                 cancelText={'取消'}
             >
                 <p>团队名称：<Input className="w200" value={currRecord.teamName} onChange={e => this.onchangeEvent(e, 'teamName')}/></p>
-                <p>课题：<Input className="w200" value={currRecord.issueName} onChange={e => this.onchangeEvent(e, 'issueName')}/></p>
                 <p>研究方向：<Input className="w200" value={currRecord.direction} onChange={e => this.onchangeEvent(e, 'direction')}/></p>
+                <p>招募要求：<Input className="w200" value={currRecord.requirements} onChange={e => this.onchangeEvent(e, 'requirements')}/></p>
                 <p>需要学生数：<Input className="w200" value={currRecord.needStudent} onChange={e => this.onchangeEvent(e, 'needStudent')}/></p>
                 <p>联系人：<Input className="w200" value={currRecord.contactInfo} onChange={e => this.onchangeEvent(e, 'contactInfo')}/></p>
                 <p>联系方式：<Input className="w200" value={currRecord.contact} onChange={e => this.onchangeEvent(e, 'contact')}/></p>
             </Modal>
         </Fragment>;
     }
+    changeStatus = async (id: any, e: any) => {
+        const r: any = await post("/api/ann/changeRecruitById", {id, status: e});
+        if (r.code === "1"){
+            message.success("修改成功", 1 , () => {
+                location.reload();
+            });
+        }else{
+            message.warn(r.msg)
+        }
+    };
     handleOk = async (e: any) => {
         const {currRecord} = this.state;
         const r: any = await post("/api/ann/changeRecruitById", currRecord);
