@@ -4,6 +4,8 @@ import UploadFile from "@/components/UploadFile";
 import {connect} from "umi";
 import moment from "moment";
 import {get, post} from "@/utils/request";
+import _ from "lodash";
+import util from "@/utils/util";
 
 interface IRecord {
     name: string,
@@ -106,6 +108,12 @@ class ExportStudents extends Component<any & IRecord, any>{
                         major: item.专业,
                         clbum: item.班级,
                     }))
+                    const _params = _.map(params, "phone")
+                    const duplicateArray = util.duplicate(_params);
+                    if (duplicateArray.length){
+                        message.warn(`手机号${JSON.stringify(duplicateArray)}重复`, 8);
+                        return;
+                    }
                     dispatch({
                         type: "baseData/exportsBaseStudents",
                         payload: params

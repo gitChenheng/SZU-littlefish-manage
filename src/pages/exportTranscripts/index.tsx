@@ -14,12 +14,8 @@ interface IRecord {
     term: string,
     gpa: string,
     obtainCredit: string,
-    electiveCredit: string,
-    rank: string,
-    relateRank: string,
     proRank: string,
     gradeRank: string,
-    gradeStudent: string,
 }
 
 class ExportTranscripts extends Component<any, any>{
@@ -36,12 +32,8 @@ class ExportTranscripts extends Component<any, any>{
             term: "",
             gpa: "",
             obtainCredit: "",
-            electiveCredit: "",
-            rank: "",
-            relateRank: "",
             proRank: "",
             gradeRank: "",
-            gradeStudent: "",
         },
         columns: [
             {
@@ -94,21 +86,6 @@ class ExportTranscripts extends Component<any, any>{
                 key: 'obtainCredit',
             },
             {
-                title: '选课学分',
-                dataIndex: 'electiveCredit',
-                key: 'electiveCredit',
-            },
-            {
-                title: '排名',
-                dataIndex: 'rank',
-                key: 'rank',
-            },
-            {
-                title: '相对排名',
-                dataIndex: 'relateRank',
-                key: 'relateRank',
-            },
-            {
                 title: '专业排名',
                 dataIndex: 'proRank',
                 key: 'proRank',
@@ -117,11 +94,6 @@ class ExportTranscripts extends Component<any, any>{
                 title: '年级排名',
                 dataIndex: 'gradeRank',
                 key: 'gradeRank',
-            },
-            {
-                title: '年级人数',
-                dataIndex: 'gradeStudent',
-                key: 'gradeStudent',
             },
             {
                 title: '操作',
@@ -163,14 +135,10 @@ class ExportTranscripts extends Component<any, any>{
                         name: item.姓名,
                         studyNum: item.学号,
                         term: item.成绩截止学年学期,
-                        gpa: item.GPA,
+                        gpa: item.绩点,
                         obtainCredit: item.获得学分,
-                        electiveCredit: item.选课学分,
-                        rank: item.排名,
-                        relateRank: item.相对排名,
-                        // proRank: item.专业排名,
-                        // gradeRank: item.年级排名,
-                        // gradeStudent: item.参与排名人数,
+                        proRank: item.专业排名,
+                        gradeRank: item.年级排名,
                     }))
                     console.log(params)
                     dispatch({
@@ -204,12 +172,8 @@ class ExportTranscripts extends Component<any, any>{
                 <p>学期：<Input className="w200" value={currRecord.term} onChange={e => this.onchangeEvent(e, 'term')}/></p>
                 <p>gpa：<Input className="w200" value={currRecord.gpa} onChange={e => this.onchangeEvent(e, 'gpa')}/></p>
                 <p>获得学分：<Input className="w200" value={currRecord.obtainCredit} onChange={e => this.onchangeEvent(e, 'obtainCredit')}/></p>
-                <p>选课学分：<Input className="w200" value={currRecord.electiveCredit} onChange={e => this.onchangeEvent(e, 'electiveCredit')}/></p>
-                <p>排名：<Input className="w200" value={currRecord.rank} onChange={e => this.onchangeEvent(e, 'rank')}/></p>
-                <p>相对排名：<Input className="w200" value={currRecord.relateRank} onChange={e => this.onchangeEvent(e, 'relateRank')}/></p>
                 <p>专业排名：<Input className="w200" value={currRecord.proRank} onChange={e => this.onchangeEvent(e, 'proRank')}/></p>
                 <p>年级排名：<Input className="w200" value={currRecord.gradeRank} onChange={e => this.onchangeEvent(e, 'gradeRank')}/></p>
-                <p>年级人数：<Input className="w200" value={currRecord.gradeStudent} onChange={e => this.onchangeEvent(e, 'gradeStudent')}/></p>
             </Modal>
         </Fragment>;
     }

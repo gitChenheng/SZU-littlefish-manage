@@ -7,6 +7,7 @@ import {post} from "@/utils/request";
 interface IRecord {
     scientificName: string,
     intro: string,
+    results: string,
     direction: string,
     nucleusStuff: string,
     pic: string,
@@ -16,12 +17,14 @@ interface IRecord {
 class AnnScientific extends Component<any, any>{
     private form: any;
     private el: any;
+    private elPic: any;
     state = {
         visible: false,
         currRecord: {
             id: undefined,
             scientificName: "",
             intro: "",
+            results: "",
             direction: "",
             nucleusStuff: "",
             pic: "",
@@ -34,9 +37,14 @@ class AnnScientific extends Component<any, any>{
                 key: 'scientificName',
             },
             {
-                title: '简介\\核心成果',
+                title: '简介',
                 dataIndex: 'intro',
                 key: 'intro',
+            },
+            {
+                title: '核心成果',
+                dataIndex: 'results',
+                key: 'results',
             },
             {
                 title: '科研方向',
@@ -142,8 +150,13 @@ class AnnScientific extends Component<any, any>{
                         payload: params
                     })
                     setTimeout(() => {
-                        this.form.setFieldsValue({ scientificName: "", intro: "", direction: "", nucleusStuff: ""});
+                        this.form.setFieldsValue({
+                            scientificName: "", intro: "",
+                            direction: "", nucleusStuff: "",
+                            results: "",
+                        });
                         this.el.resetFileList();
+                        this.elPic.resetFileList();
                         this.setState({pic: "", pdfUrl: ""})
                     }, 0)
                 }}
@@ -158,15 +171,15 @@ class AnnScientific extends Component<any, any>{
                 ><Input />
                 </Form.Item>
                 <Form.Item
-                    label="简介\核心成果"
+                    label="简介"
                     name="intro"
                     rules={[{ required: true, message: 'Please input your intro!' }]}
                 ><Input.TextArea />
                 </Form.Item>
                 <Form.Item
-                    label="科研方向"
-                    name="direction"
-                    rules={[{ required: true, message: 'Please input your direction!' }]}
+                    label="核心成果"
+                    name="results"
+                    rules={[{ required: true, message: 'Please input your results!' }]}
                 ><Input.TextArea />
                 </Form.Item>
                 <Form.Item
@@ -176,10 +189,10 @@ class AnnScientific extends Component<any, any>{
                 ><Input.TextArea />
                 </Form.Item>
                 <Form.Item
-                    label="pic"
+                    label="合照"
                 >
                     <UploadFile
-                        ref={el => this.el = el}
+                        ref={el => this.elPic = el}
                         callback={(r: any) => {
                             if (r.code === "1"){
                                 const pic = r.data;
@@ -187,6 +200,12 @@ class AnnScientific extends Component<any, any>{
                             }
                         }}
                     />
+                </Form.Item>
+                <Form.Item
+                    label="科研方向"
+                    name="direction"
+                    rules={[{ required: true, message: 'Please input your direction!' }]}
+                ><Input.TextArea />
                 </Form.Item>
                 <Form.Item
                     label="PDF"
@@ -221,9 +240,10 @@ class AnnScientific extends Component<any, any>{
                 cancelText={'取消'}
             >
                 <p>名称：<Input className="w200" value={currRecord.scientificName} onChange={e => this.onchangeEvent(e, 'scientificName')}/></p>
-                <p>简介\核心成果：<Input.TextArea className="w200" value={currRecord.intro} onChange={e => this.onchangeEvent(e, 'intro')}/></p>
-                <p>科研方向：<Input.TextArea className="w200" value={currRecord.direction} onChange={e => this.onchangeEvent(e, 'direction')}/></p>
+                <p>简介：<Input.TextArea className="w200" value={currRecord.intro} onChange={e => this.onchangeEvent(e, 'intro')}/></p>
+                <p>核心成果：<Input.TextArea className="w200" value={currRecord.results} onChange={e => this.onchangeEvent(e, 'results')}/></p>
                 <p>核心成员：<Input.TextArea className="w200" value={currRecord.nucleusStuff} onChange={e => this.onchangeEvent(e, 'nucleusStuff')}/></p>
+                <p>科研方向：<Input.TextArea className="w200" value={currRecord.direction} onChange={e => this.onchangeEvent(e, 'direction')}/></p>
                 <>合照地址：{currRecord.pic} <UploadFile
                     ref={el => this.el = el}
                     callback={(r: any) => {

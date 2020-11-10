@@ -2,8 +2,9 @@ import React, { Fragment, Component } from 'react';
 import {Table, Divider, Button, Popconfirm, Input, Modal, message} from 'antd';
 import UploadFile from '@/components/UploadFile';
 import { connect } from 'umi';
-import {unionBy, differenceBy} from "lodash";
+import _, {unionBy, differenceBy} from "lodash";
 import {post} from "@/utils/request";
+import util from "@/utils/util";
 
 interface IRecord {
     name: string,
@@ -82,10 +83,15 @@ class ExportParents extends Component<any, any>{
                             name: item.家长姓名,
                             phone : item.家长手机号,
                         }));
-                        const newParams1 = unionBy(params1, 'phone');
+                        const _params1 = _.map(params1, "phone")
+                        const duplicateArray = util.duplicate(_params1);
+                        if (duplicateArray.length){
+                            message.warn(`家长手机号${JSON.stringify(duplicateArray)}重复`, 8);
+                            return;
+                        }
                         dispatch({
                             type: 'baseData/exportsBaseParents',
-                            payload: newParams1,
+                            payload: params1,
                         });
                         const params2 = data.map((item : any) => ({
                             phone: item.家长手机号,

@@ -3,6 +3,8 @@ import {Table, Divider, Button, Popconfirm, Input, Modal, message} from 'antd';
 import UploadFile from '@/components/UploadFile';
 import { connect } from 'umi';
 import {post} from "@/utils/request";
+import _ from "lodash";
+import util from "@/utils/util";
 
 interface IRecord {
     name: string,
@@ -76,6 +78,12 @@ class ExportTeachers extends Component<any, any> {
                             phone: item.手机号,
                             teachCardNum: item.校园卡号,
                         }));
+                        const _params = _.map(params, "phone")
+                        const duplicateArray = util.duplicate(_params);
+                        if (duplicateArray.length){
+                            message.warn(`手机号${JSON.stringify(duplicateArray)}重复`, 8);
+                            return;
+                        }
                         dispatch({
                             type: 'baseData/exportsBaseTeachers',
                             payload: params,
