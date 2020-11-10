@@ -193,10 +193,13 @@ class AnnScientific extends Component<any, any>{
                 >
                     <UploadFile
                         ref={el => this.elPic = el}
-                        callback={(r: any) => {
+                        callback={(r: any, fileList: any) => {
                             if (r.code === "1"){
-                                const pic = r.data;
-                                this.setState({pic})
+                                const arr: any[] = [];
+                                fileList.forEach((item: any) => {
+                                    arr.push(item.response.data)
+                                })
+                                this.setState({pic: arr.join(';')})
                             }
                         }}
                     />

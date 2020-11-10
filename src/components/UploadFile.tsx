@@ -14,7 +14,7 @@ export default class UploadFile extends React.Component<any, any>{
             let fileList = [...info.fileList];
             // 1. Limit the number of uploaded files
             // Only to show two recent uploaded files, and old ones will be replaced by the new
-            fileList = fileList.slice(-1);
+            fileList = fileList.slice(-5);
             // 2. Read from response and show file link
             fileList = fileList.map(file => {
                 if (file.response) {
@@ -46,12 +46,12 @@ export default class UploadFile extends React.Component<any, any>{
                     return;
                 }
                 if (info.file.status !== 'uploading') {
-                    console.log(info.file, info.fileList);
+                    // console.log(info.file, info.fileList);
                 }
                 if (info.file.status === 'done') {
                     message.success(`${info.file.name} 文件上传成功`);
                     if (this.props.callback){
-                        this.props.callback(r);
+                        this.props.callback(r, fileList);
                     }
                 } else if (info.file.status === 'error') {
                     message.error(`${info.file.name} 文件上传失败`);
