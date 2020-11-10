@@ -57,13 +57,30 @@ class AnnScientific extends Component<any, any>{
                 key: 'nucleusStuff',
             },
             {
-                title: 'pic地址',
+                title: '合照地址',
                 dataIndex: 'pic',
                 key: 'pic',
-                render: (text: any) => text ? <a
-                    href={`${process.env.requestPrefix}${text}`}
-                    target="_blank"
-                >查看详情</a> : "",
+                render: (text: any) => {
+                    if (!text){
+                        return ""
+                    }else{
+                        if (text.split(";").length === 1){
+                            return <a
+                                href={`${process.env.requestPrefix}${text}`}
+                                target="_blank"
+                            >查看详情</a>
+                        }else{
+                            return text.split(";").map((item: any, index: any) => (
+                                <a
+                                    key={index} href={`${process.env.requestPrefix}${item}`} target="_blank"
+                                    style={{marginRight: 8}}
+                                >
+                                    图片{Number(index) + 1}
+                                </a>
+                            ))
+                        }
+                    }
+                }
             },
             {
                 title: 'pdf文件地址',
@@ -247,16 +264,25 @@ class AnnScientific extends Component<any, any>{
                 <p>核心成果：<Input.TextArea className="w200" value={currRecord.results} onChange={e => this.onchangeEvent(e, 'results')}/></p>
                 <p>核心成员：<Input.TextArea className="w200" value={currRecord.nucleusStuff} onChange={e => this.onchangeEvent(e, 'nucleusStuff')}/></p>
                 <p>科研方向：<Input.TextArea className="w200" value={currRecord.direction} onChange={e => this.onchangeEvent(e, 'direction')}/></p>
-                <>合照地址：{currRecord.pic} <UploadFile
-                    ref={el => this.el = el}
-                    callback={(r: any) => {
-                        if (r.code === "1"){
-                            const newObj = Object.assign({}, this.state.currRecord);
-                            newObj.pic = r.data;
-                            this.setState({currRecord: newObj})
-                        }
-                    }}
-                /></>
+                <>合照地址：<br/>
+                    {currRecord.pic.split(";").map((item: any, index: any) => (
+                        <div key={index}>{item}</div>
+                    ))}
+                    <UploadFile
+                        ref={el => this.elPic = el}
+                        callback={(r: any, fileList: any) => {
+                            if (r.code === "1"){
+                                const newObj = Object.assign({}, this.state.currRecord);
+                                const arr: any[] = [];
+                                fileList.forEach((item: any) => {
+                                    arr.push(item.response.data)
+                                })
+                                newObj.pic = arr.join(';');
+                                this.setState({currRecord: newObj})
+                            }
+                        }}
+                    />
+                </>
                 <>PDF地址：{currRecord.pdfUrl} <UploadFile
                     ref={el => this.el = el}
                     callback={(r: any) => {
