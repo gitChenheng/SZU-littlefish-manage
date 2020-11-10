@@ -6,7 +6,7 @@ export default class Home extends Component<any, any>{
     render() {
         return <Fragment>
             <img
-                src={require("@public/img/example.png")} alt=""
+                src={require("@public/img/logo.png")} alt=""
                 style={{width: 500}}
             />
         </Fragment>;

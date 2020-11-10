@@ -27,14 +27,13 @@ class Together extends Component<any, any>{
                 key: 'time',
                 render: (text: any, record: any, index: number) =>
                     <DatePicker
+                        showTime
                         defaultValue={text ? moment(new Date(text), 'YYYY/MM/DD') : undefined}
                         onChange={(date, dateString) => {
-                            console.log(date, dateString)
                             this.props.dispatch({
                                 type: "interact/updateTogether",
                                 payload: {
                                     ...record,
-                                    // time: new Date(dateString).getTime(),
                                     time: dateString,
                                 }
                             })
@@ -66,7 +65,6 @@ class Together extends Component<any, any>{
                 render: ((text: any, record: any) =>
                     <Button type="primary" onClick={() => {
                         record.time = new Date(record.time).getTime();
-                        console.log(record)
                         this.props.dispatch({
                           type: "interact/completeTogether",
                           payload: record
