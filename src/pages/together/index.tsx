@@ -22,7 +22,17 @@ class Together extends Component<any, any>{
                 key: 'knowledgePoint',
             },
             {
-                title: '时间',
+                title: '提交人',
+                dataIndex: 'submitter',
+                key: 'submitter',
+            },
+            {
+                title: '提交时间',
+                dataIndex: 'created_at',
+                key: 'created_at',
+            },
+            {
+                title: '辅导时间',
                 dataIndex: 'time',
                 key: 'time',
                 render: (text: any, record: any, index: number) =>
@@ -41,7 +51,7 @@ class Together extends Component<any, any>{
                     />,
             },
             {
-                title: '地点',
+                title: '辅导地点',
                 dataIndex: 'address',
                 key: 'address',
                 render: (text: any, record: any, index: number) => <div>

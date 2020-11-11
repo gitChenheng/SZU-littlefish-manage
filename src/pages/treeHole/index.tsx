@@ -11,7 +11,8 @@ class TreeHole extends Component<any, any>{
                 onChange={(key) => {console.log(key)}}
             >
                 {interact.treeHoles.map((it: any, i: number) => (
-                    <Collapse.Panel header={it.issue} key={i}>
+                    <Collapse.Panel header={`${it.type === 1 ? "学习小树洞" : it.type === 2 ? "心灵小树洞" : "家长意见"} （
+                    ${it.anonymous ? "匿名" : it.issuener.name}）: ${it.issue}`} key={i}>
                         {it.comments.map((item: any, index: any) => (
                             <div key={index}>
                                 <div>{item.name} : {item.content}</div>
