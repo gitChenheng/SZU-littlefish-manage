@@ -1,7 +1,7 @@
 import {get, post} from "@/utils/request";
 
-export const fetchTreeHoles = async () => {
-    return await get("/api/treeHole/getAllTreeHoles")
+export const fetchTreeHoles = async (params: any) => {
+    return await post("/api/treeHole/getAllTreeHoles", params)
 }
 export const fetchTreeHoleComments = async (params: any) => {
     return await post("/api/treeHole/getTreeHoleComments", params)

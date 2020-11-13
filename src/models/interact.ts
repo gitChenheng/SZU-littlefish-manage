@@ -4,7 +4,7 @@ import {message} from "antd";
 export default {
     namespace: "interact",
     state: {
-        treeHoles: [],
+        treeHoles: {},
         together: [],
     },
     reducers: {
@@ -36,7 +36,7 @@ export default {
     effects: {
         *fetchTreeHoles(_: any, {call, put}: any){
             try {
-                const data = yield call(fetchTreeHoles)
+                const data = yield call(fetchTreeHoles, _.payload)
                 yield put({
                     type: "getTreeHoles",
                     payload: data.data,
